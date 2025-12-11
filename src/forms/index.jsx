@@ -266,7 +266,7 @@ const DinamikForm = ({ setCountValue, formData }) => {
           },
           {
             onSuccess: (res) => {
-              if (res?.id) {
+              if (res?.status === 'success') {
                 // ✅ Success holatini o'rnatish
                 setSuccess(true);
 
