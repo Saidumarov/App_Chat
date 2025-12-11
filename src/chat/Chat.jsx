@@ -373,7 +373,7 @@ const Chat = () => {
       />
 
       <div className="fixed top-0 left-0 w-full h-full bg-white shadow-main flex flex-col">
-        <div className="bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 text-white cursor-move select-none">
+        <div className="bg-gradient-to-r sticky top-0 left-0 right-0 z-10 from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 text-white cursor-move select-none">
           <div className="flex justify-between items-center">
             <div className="flex items-center justify-start gap-x-2">
               <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -384,7 +384,7 @@ const Chat = () => {
           </div>
         </div>
 
-    <div className="overflow-y-auto h-full pb-20 overflow-x-hidden w-full p-5 max-sm:px-2 bg-gray-50 pt-[68px]">
+    <div className="flex-1 overflow-y-auto overflow-x-hidden w-full p-5 max-sm:px-2 bg-gray-50">
           {messages?.map((msg) => (
             <div
               key={msg?.id}
@@ -503,7 +503,7 @@ const Chat = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
-          <div className="fixed bottom-0  left-0 right-0 !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200">
+            <div className="flex-shrink-0 !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200">
 
           {selectedImage && (
             <div className="mb-2 w-20 h-20 relative">
