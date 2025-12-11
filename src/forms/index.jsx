@@ -18,6 +18,7 @@ import { CustomInput, CustomTextarea } from "../components/shared/custom-input";
 import { CustomLabel } from "../components/shared/custom-label";
 import { ImSpinner9 } from "react-icons/im";
 import { createFormSchema, formatInput, renderType } from "./shared";
+import { getStoredSessionId } from "../hooks/storeg";
 
 const DinamikForm = ({ setCountValue, formData }) => {
   const { locale: lang } = useLocale();
@@ -109,51 +110,51 @@ const DinamikForm = ({ setCountValue, formData }) => {
           />
         );
 
-      case "select":
-        return (
-          <Controller
-            name={field.name}
-            control={control}
-            render={({ field: formField }) => {
-              return (
-                <div>
-                  <Select
-                    value={formField.value || ""}
-                    onValueChange={(value) => {
-                      formField.onChange(value);
-                    }}
-                  >
-                    <SelectTrigger
-                      className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
-                        hasError
-                          ? "!bg-red-100 border-red-300"
-                          : "bg-white border-gray-300"
-                      }`}
-                    >
-                      <SelectValue
-                        placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
-                      >
-                        {field.options?.find(
-                          (el) => el?.value === formField?.value
-                        )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
-                      </SelectValue>
-                    </SelectTrigger>
+      // case "select":
+      //   return (
+      //     <Controller
+      //       name={field.name}
+      //       control={control}
+      //       render={({ field: formField }) => {
+      //         return (
+      //           <div>
+      //             <Select
+      //               value={formField.value || ""}
+      //               onValueChange={(value) => {
+      //                 formField.onChange(value);
+      //               }}
+      //             >
+      //               <SelectTrigger
+      //                 className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
+      //                   hasError
+      //                     ? "!bg-red-100 border-red-300"
+      //                     : "bg-white border-gray-300"
+      //                 }`}
+      //               >
+      //                 <SelectValue
+      //                   placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
+      //                 >
+      //                   {field.options?.find(
+      //                     (el) => el?.value === formField?.value
+      //                   )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
+      //                 </SelectValue>
+      //               </SelectTrigger>
 
-                    <SelectContent className="w-full !text-[1rem] min-w-60">
-                      <SelectGroup>
-                        {field?.options?.map((opt, i) => (
-                          <SelectItem key={i} value={opt?.value}>
-                            {lang === "uz" ? opt?.labelUz : opt?.labelRu}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              );
-            }}
-          />
-        );
+      //               <SelectContent className="w-full !text-[1rem] min-w-60">
+      //                 <SelectGroup>
+      //                   {field?.options?.map((opt, i) => (
+      //                     <SelectItem key={i} value={opt?.value}>
+      //                       {lang === "uz" ? opt?.labelUz : opt?.labelRu}
+      //                     </SelectItem>
+      //                   ))}
+      //                 </SelectGroup>
+      //               </SelectContent>
+      //             </Select>
+      //           </div>
+      //         );
+      //       }}
+      //     />
+      //   );
 
       case "file":
         return (
@@ -243,7 +244,10 @@ const DinamikForm = ({ setCountValue, formData }) => {
 
   const onFormSubmit = handleSubmit(
     (data) => {
+      const ID = getStoredSessionId();
       const body = {
+        ticket_number: formData?.ticket_number,
+        anon_id: ID,
         data: {
           ...data,
           icon: selectedForm.icon,
@@ -257,7 +261,8 @@ const DinamikForm = ({ setCountValue, formData }) => {
         POST(
           {
             body: body,
-            url: "/chat/tickets/",
+            url: `/chat/ticket/2d70f9c-87c1-4d2d-8f3b-87e645e983aa/`,
+            key: true,
           },
           {
             onSuccess: (res) => {
@@ -284,7 +289,6 @@ const DinamikForm = ({ setCountValue, formData }) => {
             },
           }
         );
-      } else {
       }
     },
     (errors) => {

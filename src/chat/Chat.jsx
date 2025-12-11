@@ -7,14 +7,9 @@ import { useTranslations } from "next-intl";
 import { playSendSound } from "../hooks/playSendSound";
 import { IsTypengLoading } from "../components";
 import { usePost } from "../service/post.service";
-import {
-  clearStoredSessionId,
-  getStoredSessionId,
-  setStoredSessionId,
-} from "../hooks/storeg";
+import { getStoredSessionId } from "../hooks/storeg";
 import { useLocale } from "../context/language-provider";
 import { GroupedMessages } from "./MessageFilter";
-import { Data } from "../forms/shared";
 const WS_URL = import.meta.env.VITE_MKBANK_WS_API;
 
 const Chat = () => {
@@ -77,7 +72,6 @@ const Chat = () => {
         {
           onSuccess: (res) => {
             connectWebSocket(res.id);
-            setStoredSessionId(res?.anon_id);
             setSessionId(res.id);
             setMessages((prev) => [
               ...prev,
@@ -138,7 +132,6 @@ const Chat = () => {
                 console.log(
                   "❌ 5 failed connections. A new session will be created."
                 );
-                clearStoredSessionId();
                 setSessionId(null);
                 setMessages([]);
                 setCount(0);
@@ -168,15 +161,13 @@ const Chat = () => {
         const msg = data?.message;
 
         setMessages((prev) => {
-          // 1. Agar sender user bo'lsa — UI ga qo‘shmaymiz
           if (msg?.sender === "user" || !msg?.text) return prev;
 
-          // 2. Avvaldan bor bo'lsa — qo‘shmaymiz
           const exists = prev?.some((m) => m?.id === msg?.id);
           if (exists) return prev;
 
-          // 3. Yangi message qo‘shish
-          return [
+          // Yangi message obyekti
+          const newMessages = [
             ...prev,
             {
               id: msg?.id,
@@ -193,10 +184,33 @@ const Chat = () => {
               created_at: msg?.created_at,
               image: msg?.image || null,
               isTyping: true,
-              form: msg?.function_result,
             },
           ];
+
+          // Agar form mavjud bo'lsa, alohida object sifatida qo'shamiz
+          if (msg?.function_result?.form) {
+            newMessages.push({
+              id: msg?.id + "_form",
+              text: null,
+              sender: msg?.sender,
+              operatorName:
+                msg?.sender === "ai"
+                  ? "MKBANK AI"
+                  : msg?.sender === "operator"
+                  ? t("op")
+                  : msg?.sender === "system"
+                  ? "MKBANK AI"
+                  : "",
+              created_at: msg?.created_at,
+              image: null,
+              isTyping: false,
+              form: msg?.function_result,
+            });
+          }
+
+          return newMessages;
         });
+
         setIsTyping({
           sender: "ai",
           is_typing: false,
@@ -204,23 +218,39 @@ const Chat = () => {
         break;
 
       case "history":
-        const loadedMessages = data?.messages?.map((msg) => ({
-          id: msg?.id,
-          text: msg?.text,
-          sender: msg?.sender,
-          operatorName:
-            msg?.sender === "ai"
-              ? "MKBANK AI"
-              : msg?.sender === "operator"
-              ? t("op")
-              : msg?.sender === "system"
-              ? "MKBANK AI"
-              : "",
-          created_at: msg?.created_at,
-          image: msg?.image || null,
-          isTyping: false,
-          form: msg?.function_result,
-        }));
+        const loadedMessages = data?.messages?.flatMap((msg) => {
+          const baseMsg = {
+            id: msg?.id,
+            text: msg?.text,
+            sender: msg?.sender,
+            operatorName:
+              msg?.sender === "ai"
+                ? "MKBANK AI"
+                : msg?.sender === "operator"
+                ? t("op")
+                : msg?.sender === "system"
+                ? "MKBANK AI"
+                : "",
+            created_at: msg?.created_at,
+            image: msg?.image || null,
+            isTyping: false,
+          };
+
+          if (msg?.function_result?.form) {
+            const formMsg = {
+              ...baseMsg,
+              id: msg?.id + "_form",
+              text: null,
+              image: null,
+              isTyping: false,
+              form: msg?.function_result,
+            };
+            return [baseMsg, formMsg];
+          }
+
+          return [baseMsg];
+        });
+
         if (loadedMessages?.length > 0 && ID && ID !== "undefined") {
           setMessages(loadedMessages);
         }
@@ -235,6 +265,7 @@ const Chat = () => {
       case "session_update":
         setActive(data?.update?.status);
         break;
+
       case "error":
         console.error("Server error:", data.error);
         break;
@@ -315,7 +346,6 @@ const Chat = () => {
     }
 
     if (!ID || ID === undefined || ID === "undefined") {
-      clearStoredSessionId();
       setSessionId(null);
       setCount(0);
       setCountValue(0);

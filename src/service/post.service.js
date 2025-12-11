@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "./token.service";
+import { encryptData } from "./crypto.service";
 const BASE_URI = import.meta.env.VITE_MKBANK_AI_API;
 
-export const postData = async ({ url, body }) => {
+export const postData = async ({ url, body, key = false }) => {
   try {
-    const res = await api.post(`${BASE_URI}${url}`, body);
+    const encryptedBody = encryptData(body);
+    const res = await api.post(`${BASE_URI}${url}`, key ?  { data: encryptedBody } :  body);
     return res?.data;
   } catch (error) {
     return error;
