@@ -79,3 +79,99 @@ export function formatISODate(isoDate, format) {
     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
   }
 }
+
+// Oylar nomlari
+export const monthNames = {
+  uz: [
+    "Yanvar",
+    "Fevral",
+    "Mart",
+    "Aprel",
+    "May",
+    "Iyun",
+    "Iyul",
+    "Avgust",
+    "Sentabr",
+    "Oktabr",
+    "Noyabr",
+    "Dekabr",
+  ],
+  ru: [
+    "Январь",
+    "Февраль",
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь",
+  ],
+};
+
+// Barcha xabarlarni yig'ish va sana bo'yicha guruhlash
+export const groupMessagesByDate = (sessions, language = "uz") => {
+  const allMessages = [];
+
+  // Barcha sessiyalardan xabarlarni yig'ish
+  sessions?.forEach((session) => {
+    if (session) {
+      allMessages.push(session);
+    }
+  });
+
+  // Vaqt bo'yicha tartiblash (eng yangi oxirida)
+  allMessages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+  // Sana bo'yicha guruhlash
+  const grouped = {};
+
+  allMessages.forEach((msg) => {
+    const date = new Date(msg.created_at);
+    const dateKey = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = {
+        date: date,
+        messages: [],
+      };
+    }
+
+    grouped[dateKey].messages.push(msg);
+  });
+
+  // Sana bo'yicha tartiblash (eng eski birinchi, telegram kabi)
+  const sortedGroups = Object.entries(grouped).sort((a, b) => {
+    return a[1].date - b[1].date;
+  });
+
+  return sortedGroups;
+};
+
+// Sana formatini ko'rsatish
+export const formatDateHeader = (date, language = "uz") => {
+  const day = date.getDate();
+  const month = monthNames[language][date.getMonth()];
+  const year = date.getFullYear();
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Bugun
+  if (date.toDateString() === today.toDateString()) {
+    return language === "uz" ? "Bugun" : "Сегодня";
+  }
+
+  // Kecha
+  if (date.toDateString() === yesterday.toDateString()) {
+    return language === "uz" ? "Kecha" : "Вчера";
+  }
+
+  return `${day} ${month} ${year}`;
+};

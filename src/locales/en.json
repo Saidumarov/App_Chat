@@ -8,6 +8,11 @@
     "me": "You",
     "memessage": "Your message",
     "send": "Write your message...",
-    "text": "Hello, dear customer! 😊 How can I help you?"
+    "text": "Hello, dear customer! 😊 How can I help you?",
+    "save": "Send",
+    "cancel": "Cancel",
+    "loginError": "An error occurred during login. Please check your information.",
+    "tooManyRequests": "Too many attempts. Please try again later.",
+    "ss": "Session does not exist"
   }
 }

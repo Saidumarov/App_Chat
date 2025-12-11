@@ -33,7 +33,7 @@ export const IsTypengLoading = ({ sender }) => {
   const t = useTranslations("chat");
 
   return (
-    <div className="flex justify-start mb-3">
+    <div className="flex justify-start pt-3 mb-3">
       <div className="bg-gray-200 rounded-xl rounded-bl-none p-3 ">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-8 h-8  rounded-full flex items-center justify-center text-white text-sm font-bold">

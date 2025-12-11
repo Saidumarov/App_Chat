@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Paperclip, X } from "lucide-react";
-import { Chek, OP, Replay, Sends } from "../constants/icons";
+import { Sends } from "../constants/icons";
 import { ImageViewer } from "../components/ImageViewer";
 import { Bot } from "../hooks/usePhone";
 import { useTranslations } from "next-intl";
-import { playSendSound, TypewriterText } from "../hooks/playSendSound";
+import { playSendSound } from "../hooks/playSendSound";
 import { IsTypengLoading } from "../components";
 import { usePost } from "../service/post.service";
 import {
@@ -12,8 +12,9 @@ import {
   getStoredSessionId,
   setStoredSessionId,
 } from "../hooks/storeg";
-import { formatISODate } from "../hooks/useDate";
 import { useLocale } from "../context/language-provider";
+import { GroupedMessages } from "./MessageFilter";
+import { Data } from "../forms/shared";
 const WS_URL = import.meta.env.VITE_MKBANK_WS_API;
 
 const Chat = () => {
@@ -29,6 +30,7 @@ const Chat = () => {
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   const [countValue, setCountValue] = useState(0);
   const [active, setActive] = useState("ai");
+  const [type, seTtype] = useState("app_development");
 
   // Backend states
   const [sessionId, setSessionId] = useState(null);
@@ -229,6 +231,12 @@ const Chat = () => {
         }
         break;
 
+      case "typings":
+        if (data?.sender !== "user") {
+          seTtype(data);
+        }
+        break;
+
       case "session_update":
         setActive(data?.update?.status);
         break;
@@ -260,6 +268,7 @@ const Chat = () => {
         text: inputMessage,
         sender: "user",
         language: locale,
+        channel: "mobile",
         ...(selectedImage && { image: selectedImage }),
       })
     );
@@ -274,7 +283,13 @@ const Chat = () => {
         sender: "user",
         isTyping: false,
         created_at: new Date(),
+        channel: "mobile",
         ...(selectedImage && { image: selectedImage }),
+      },
+      {
+        ...Data,
+        sender: "bot", // ✅ Bot tomonidan yuborilgan
+        created_at: new Date(), // ✅ Joriy vaqt
       },
     ]);
 
@@ -328,6 +343,7 @@ const Chat = () => {
         session_id: sessionId,
         is_typing: isTyping,
         sender: "user",
+        channel: "mobile",
       })
     );
   };
@@ -373,7 +389,7 @@ const Chat = () => {
       />
 
       <div className="fixed top-0 left-0 w-full h-full bg-white shadow-main flex flex-col">
-        <div className="bg-gradient-to-r sticky top-0 left-0 right-0 z-10 from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 text-white cursor-move select-none">
+        <div className="bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 text-white  select-none">
           <div className="flex justify-between items-center">
             <div className="flex items-center justify-start gap-x-2">
               <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -384,118 +400,15 @@ const Chat = () => {
           </div>
         </div>
 
-    <div className="flex-1 overflow-y-auto overflow-x-hidden w-full p-5 max-sm:px-2 bg-gray-50">
-          {messages?.map((msg) => (
-            <div
-              key={msg?.id}
-              className={`mb-3 flex   w-full ${
-                msg?.sender === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`relative flex  max-w-[100%]  justify-between   items-center group  `}
-              >
-                <button
-                  disabled
-                  className={` ${
-                    msg?.sender === "user" ? "" : "hidden"
-                  } transition-all opacity-0 duration-300 mr-5 max-sm:mr-2 bg-white cursor-pointer shadow-md rounded-full p-1.5 hover:bg-gray-100  `}
-                >
-                  <Replay />
-                </button>
-                <div
-                  className={`  w-[90%] min-w-20 relative  rounded-xl p-3 ${
-                    msg?.sender === "user"
-                      ? "bg-[#18c139] rounded-br-none"
-                      : "bg-gray-200 rounded-bl-none "
-                  }   `}
-                >
-                  {["operator", "ai", "system"]?.includes(msg?.sender) ? (
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8  rounded-full flex items-center justify-center text-white text-sm font-bold">
-                        {["ai", "system"].includes(msg?.sender) ? (
-                          <img
-                            src={`${Bot}`}
-                            className="w-full h-full rounded-full"
-                            alt="AI"
-                          />
-                        ) : (
-                          <div className="w-full h-full rounded-full bg-gray-300 p-1 flex items-center justify-center">
-                            <OP />
-                          </div>
-                        )}
-                      </div>
-                      <span className="text-sm font-semibold text-gray-700">
-                        {msg?.operatorName || t("op")}
-                      </span>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-
-                  {msg?.image && (
-                    <img
-                      src={msg?.image}
-                      onClick={() => openViewer(msg?.image)}
-                      alt="rasm"
-                      className="w-full max-w-xs rounded-md cursor-pointer mb-2"
-                    />
-                  )}
-
-                  {msg?.text && (
-                    <div
-                      className={` max-sm:text-[16px] max-2xl:text-sm break-words ${
-                        msg?.sender === "user" ? "text-white" : "text-gray-900"
-                      } `}
-                    >
-                      {msg?.sender === "user" ? (
-                        msg?.text
-                      ) : msg?.isTyping ? (
-                        <TypewriterText
-                          text={msg?.text}
-                          speed={50}
-                          setIsLoading={setIsLoading}
-                          setCountValue={setCountValue}
-                        />
-                      ) : (
-                        msg?.text
-                      )}
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between gap-2 mt-2">
-                    <div
-                      className={`text-xs absolute flex items-center gap-1 right-2 ${
-                        msg?.sender === "user" ? "text-white" : "text-gray-400"
-                      } `}
-                    >
-                      {formatISODate(msg?.created_at, "soat")}{" "}
-                      {msg?.sender === "user" ? (
-                        <div className="flex relative items-start">
-                          <span className="-mr-3">
-                            <Chek />
-                          </span>{" "}
-                          <span>
-                            <Chek />
-                          </span>{" "}
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <button
-                  disabled
-                  className={` } ${
-                    msg.sender === "user" ? "hidden" : ""
-                  } transition-all  opacity-0 duration-300 ml-5 max-sm:ml-2 bg-white cursor-pointer shadow-md rounded-full p-1.5 hover:bg-gray-100  `}
-                >
-                  <Replay />
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="overflow-y-auto  h-full overflow-x-hidden w-full  p-5  max-sm:px-2 bg-gray-50">
+          <GroupedMessages
+            messages={messages}
+            openViewer={openViewer}
+            setCountValue={setCountValue}
+            setIsLoading={setIsLoading}
+            type={type}
+            sessionId={sessionId}
+          />
           {isTyping?.sender !== "user" ? (
             isTyping?.is_typing && <IsTypengLoading sender={isTyping?.sender} />
           ) : (
@@ -503,8 +416,9 @@ const Chat = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
-            <div className="flex-shrink-0 !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200">
-
+        <div
+          className={`  !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200`}
+        >
           {selectedImage && (
             <div className="mb-2 w-20 h-20 relative">
               <img

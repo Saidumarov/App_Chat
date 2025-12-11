@@ -8,6 +8,12 @@
     "me": "Siz",
     "memessage": "Sizning xabaringiz",
     "send": "Xabaringizni yozing...",
-    "text": "Assalomu alaykum, hurmatli mijoz! 😊 Sizga qanday yordam bera olaman?"
+    "text": "Assalomu alaykum, hurmatli mijoz! 😊 Sizga qanday yordam bera olaman?",
+    "save": "Yuborish",
+    "cancel": "Bekor qilish ",
+    "loginError": "Kirishda xatolik yuz berdi. Ma'lumotlarni tekshiring.",
+    "tooManyRequests": "Juda ko‘p urinishlar. Keyinroq urinib ko‘ring.",
+    "ss": "Sessiya mavjud emas",
+    "yu": "Yuborildi"
   }
 }
