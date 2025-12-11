@@ -101,6 +101,7 @@ input[type="datetime-local"] {
   appearance: none;
 }
 
+
 /* UI-Text Rich Content Styling */
 #chat-widget-root .ui-text {
   line-height: 1.6;
