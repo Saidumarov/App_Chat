@@ -30,7 +30,6 @@ const Chat = () => {
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   const [countValue, setCountValue] = useState(0);
   const [active, setActive] = useState("ai");
-  const [type, seTtype] = useState("app_development");
 
   // Backend states
   const [sessionId, setSessionId] = useState(null);
@@ -194,6 +193,7 @@ const Chat = () => {
               created_at: msg?.created_at,
               image: msg?.image || null,
               isTyping: true,
+              form: msg?.function_result,
             },
           ];
         });
@@ -219,6 +219,7 @@ const Chat = () => {
           created_at: msg?.created_at,
           image: msg?.image || null,
           isTyping: false,
+          form: msg?.function_result,
         }));
         if (loadedMessages?.length > 0 && ID && ID !== "undefined") {
           setMessages(loadedMessages);
@@ -228,12 +229,6 @@ const Chat = () => {
       case "typing":
         if (data?.sender !== "user") {
           setIsTyping(data);
-        }
-        break;
-
-      case "typings":
-        if (data?.sender !== "user") {
-          seTtype(data);
         }
         break;
 
@@ -285,11 +280,6 @@ const Chat = () => {
         created_at: new Date(),
         channel: "mobile",
         ...(selectedImage && { image: selectedImage }),
-      },
-      {
-        ...Data,
-        sender: "bot", // ✅ Bot tomonidan yuborilgan
-        created_at: new Date(), // ✅ Joriy vaqt
       },
     ]);
 
@@ -406,8 +396,6 @@ const Chat = () => {
             openViewer={openViewer}
             setCountValue={setCountValue}
             setIsLoading={setIsLoading}
-            type={type}
-            sessionId={sessionId}
           />
           {isTyping?.sender !== "user" ? (
             isTyping?.is_typing && <IsTypengLoading sender={isTyping?.sender} />
@@ -437,7 +425,7 @@ const Chat = () => {
           <div className="flex relative  items-center gap-2">
             <button
               onClick={() => fileInputRef.current.click()}
-              className="p-2 hover:bg-gray-100 top-[5px] text-gray-600 hover:text-[#18c139] rounded-full flex-shrink-0 transition-colors"
+              className="p-2 bg-gray-100 top-[5px] text-[#18c139] rounded-full flex-shrink-0 transition-colors"
             >
               <Paperclip className="w-5 h-5 " />
             </button>

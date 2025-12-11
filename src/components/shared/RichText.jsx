@@ -609,7 +609,7 @@ export const RichText = ({ field, control, hasError, lang }) => {
                     ref={editorRef}
                     contentEditable
                     suppressContentEditableWarning
-                    className={`w-full ui-text p-3 min-h-[150px] max-h-96 overflow-auto focus:outline-none  relative z-20 ${hasError ?'bg-red-50':'bg-white'} `}
+                    className={`w-full ui-text p-3 max-sm:!text-[16px] min-h-[150px] max-h-96 overflow-auto focus:outline-none  relative z-20 ${hasError ?'bg-red-50':'bg-white'} `}
                     onInput={handleInput}
                     onKeyDown={handleKeyDown}
                     onPaste={handlePaste}

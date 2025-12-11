@@ -3,7 +3,7 @@ const STORAGE_KEY = "mkbank_chat_session_id";
 // localStorage helpers
 export const getStoredSessionId = () => {
   try {
-    return "anon_db1b2a9a486a4be2";
+    return "anon_3ec7d87823694ddc";
   } catch (e) {
     console.error("localStorage o'qishda xatolik:", e);
     return null;

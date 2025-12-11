@@ -15,8 +15,6 @@ export const GroupedMessages = ({
   openViewer,
   setCountValue,
   setIsLoading,
-  type,
-  sessionId,
 }) => {
   const { locale } = useLocale();
   const groupedMessages = groupMessagesByDate(messages, locale);
@@ -34,11 +32,10 @@ export const GroupedMessages = ({
 
           {group?.messages?.map((msg) => (
             <div key={msg?.id}>
-              {msg?.fields && Array.isArray(msg.fields) ? (
+              {msg?.form ? (
                 <DinamikForm
                   setCountValue={setCountValue}
-                  currentSessionId={sessionId}
-                  type={type}
+                  formData={msg?.form}
                 />
               ) : (
                 <div

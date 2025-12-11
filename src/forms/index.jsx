@@ -13,16 +13,13 @@ import { useLocale } from "../context/language-provider";
 import { useEffect, useState } from "react";
 import { usePost } from "../service/post.service";
 import { useTranslations } from "use-intl";
-import { useQuery } from "@tanstack/react-query";
 import { RichText } from "../components/shared/RichText";
 import { CustomInput, CustomTextarea } from "../components/shared/custom-input";
 import { CustomLabel } from "../components/shared/custom-label";
 import { ImSpinner9 } from "react-icons/im";
-import { toast } from "react-toastify";
-import { getData } from "../service/get.service";
-import { createFormSchema, Data, formatInput, renderType } from "./shared";
+import { createFormSchema, formatInput, renderType } from "./shared";
 
-const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
+const DinamikForm = ({ setCountValue, formData }) => {
   const { locale: lang } = useLocale();
   const [selectedForm, setSelectedForm] = useState(null);
   const { mutate: POST, isPending: ispending } = usePost("ticket");
@@ -30,12 +27,6 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
   const t = useTranslations("chat");
   const [file, setFile] = useState("");
   const [success, setSuccess] = useState(false);
-
-  const { refetch } = useQuery({
-    queryKey: ["form/id"],
-    queryFn: () => getData(`/forms/${type}/`),
-    enabled: false,
-  });
 
   // Dynamic form validation
   const formSchema = selectedForm
@@ -55,8 +46,8 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
   const openFormModal = (form) => {
     setSelectedForm(form);
     const defaultValues = {};
-    form.fields.forEach((field) => {
-      defaultValues[field.name] = "";
+    form?.fields.forEach((field) => {
+      defaultValues[field?.name] = "";
     });
     reset(defaultValues);
   };
@@ -123,42 +114,44 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
           <Controller
             name={field.name}
             control={control}
-            render={({ field: formField }) => (
-              <div>
-                <Select
-                  value={formField.value || ""}
-                  onValueChange={(value) => {
-                    formField.onChange(value);
-                  }}
-                >
-                  <SelectTrigger
-                    className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
-                      hasError
-                        ? "!bg-red-100 border-red-300"
-                        : "bg-white border-gray-300"
-                    }`}
+            render={({ field: formField }) => {
+              return (
+                <div>
+                  <Select
+                    value={formField.value || ""}
+                    onValueChange={(value) => {
+                      formField.onChange(value);
+                    }}
                   >
-                    <SelectValue
-                      placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
+                    <SelectTrigger
+                      className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
+                        hasError
+                          ? "!bg-red-100 border-red-300"
+                          : "bg-white border-gray-300"
+                      }`}
                     >
-                      {field.options?.find(
-                        (el) => el?.value === formField?.value
-                      )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
-                    </SelectValue>
-                  </SelectTrigger>
+                      <SelectValue
+                        placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
+                      >
+                        {field.options?.find(
+                          (el) => el?.value === formField?.value
+                        )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
+                      </SelectValue>
+                    </SelectTrigger>
 
-                  <SelectContent className="w-full !text-[1rem] min-w-60">
-                    <SelectGroup>
-                      {field.options?.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {lang === "uz" ? opt.labelUz : opt.labelRu}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+                    <SelectContent className="w-full !text-[1rem] min-w-60">
+                      <SelectGroup>
+                        {field?.options?.map((opt, i) => (
+                          <SelectItem key={i} value={opt?.value}>
+                            {lang === "uz" ? opt?.labelUz : opt?.labelRu}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              );
+            }}
           />
         );
 
@@ -258,13 +251,9 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
           apptitle_ru: selectedForm?.title.ru,
           img: file || null,
         },
-        session_id: currentSessionId,
-        ticket_type: type,
-        priority: "medium",
-        description: "string",
       };
 
-      if (currentSessionId) {
+      if (formData) {
         POST(
           {
             body: body,
@@ -276,13 +265,6 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
                 // ✅ Success holatini o'rnatish
                 setSuccess(true);
 
-                // ✅ Toast xabar
-                toast.success(
-                  lang === "uz"
-                    ? "Murojaat muvaffaqiyatli yuborildi!"
-                    : "Обращение успешно отправлено!"
-                );
-
                 // ✅ 2 soniyadan keyin formani tozalash va yopish
                 setTimeout(() => {
                   setSuccess(false);
@@ -290,45 +272,40 @@ const DinamikForm = ({ type, currentSessionId, setCountValue }) => {
                   setFile("");
                   setSelectedForm(null);
                 }, 2000);
-              } else if ([404, 500, 400, 401].includes(res?.status)) {
-                toast.error(a("loginError"));
-              } else if (res?.status === 429) {
-                toast.error(a("tooManyRequests"));
               }
+              // else if ([404, 500, 400, 401].includes(res?.status)) {
+              //   toast.error(a("loginError"));
+              // } else if (res?.status === 429) {
+              //   toast.error(a("tooManyRequests"));
+              // }
             },
             onError: (error) => {
-              toast.error(
-                lang === "uz"
-                  ? "Xatolik yuz berdi. Qaytadan urinib ko'ring."
-                  : "Произошла ошибка. Попробуйте снова."
-              );
               console.error("Form submission error:", error);
             },
           }
         );
       } else {
-        toast.warning(t("ss"));
       }
     },
     (errors) => {
       // ✅ Validatsiya xatoliklarini ko'rsatish
       console.log("Validation errors:", errors);
-      toast.error(
-        lang === "uz"
-          ? "Iltimos, barcha majburiy maydonlarni to'ldiring"
-          : "Пожалуйста, заполните все обязательные поля"
-      );
+      // toast.error(
+      //   lang === "uz"
+      //     ? "Iltimos, barcha majburiy maydonlarni to'ldiring"
+      //     : "Пожалуйста, заполните все обязательные поля"
+      // );
     }
   );
 
   useEffect(() => {
-    if (Data) {
-      openFormModal(Data);
+    if (formData) {
+      openFormModal(formData?.form);
       setTimeout(() => {
         setCountValue((prev) => prev + 1);
       }, 200);
     }
-  }, []);
+  }, [formData]);
 
   if (!selectedForm) {
     return null;

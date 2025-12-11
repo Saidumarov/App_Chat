@@ -91,6 +91,16 @@
   font-family: "Roboto", sans-serif;
 }
 
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  width: 100% !important;
+  min-width: 100% !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* UI-Text Rich Content Styling */
 #chat-widget-root .ui-text {
   line-height: 1.6;
