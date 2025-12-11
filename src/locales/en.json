@@ -1,0 +1,13 @@
+{
+  "chat": {
+    "tel": "Phone number *",
+    "fullname": "Name *",
+    "start": "Start",
+    "op": "Operator",
+    "name": "Your name",
+    "me": "You",
+    "memessage": "Your message",
+    "send": "Write your message...",
+    "text": "Hello, dear customer! 😊 How can I help you?"
+  }
+}

@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Shadow DOM uchun Reset */
+:host {
+  all: initial;
+  display: block;
+}
+
+#chat-widget-root {
+  all: initial;
+  display: block;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#chat-widget-root * {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Base font sizes */
+#chat-widget-root h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+#chat-widget-root h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+#chat-widget-root h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+#chat-widget-root p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+#chat-widget-root span {
+  font-size: 14px;
+}
+#chat-widget-root button {
+  font-size: 14px;
+  cursor: pointer;
+}
+#chat-widget-root input {
+  font-size: 14px;
+}
+#chat-widget-root textarea {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Scrollbar */
+#chat-widget-root ::-webkit-scrollbar {
+  width: 5px;
+  display: block !important;
+  border-radius: 5px;
+  padding: 0;
+  margin: 0;
+  overflow: scroll;
+  height: 20px !important;
+}
+
+#chat-widget-root ::-webkit-scrollbar-thumb {
+  background-color: gray;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+#chat-widget-root .scrolbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Tailwind utility override uchun */
+#chat-widget-root .text-sm {
+  font-size: 14px !important;
+}
+#chat-widget-root .text-xs {
+  font-size: 12px !important;
+}
+#chat-widget-root .text-lg {
+  font-size: 18px !important;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+}

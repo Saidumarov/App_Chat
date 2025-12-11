@@ -1,0 +1,13 @@
+{
+  "chat": {
+    "tel": "Telefon raqam *",
+    "fullname": "Ism *",
+    "start": "Boshlash",
+    "op": "Operator",
+    "name": "Ismingiz",
+    "me": "Siz",
+    "memessage": "Sizning xabaringiz",
+    "send": "Xabaringizni yozing...",
+    "text": "Assalomu alaykum, hurmatli mijoz! 😊 Sizga qanday yordam bera olaman?"
+  }
+}

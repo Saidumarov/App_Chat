@@ -1,0 +1,59 @@
+import { useEffect, useState } from "react";
+
+export const playSendSound = () => {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  oscillator.frequency.value = 800;
+  oscillator.type = "sine";
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(
+    0.01,
+    audioContext.currentTime + 0.1
+  );
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + 0.1);
+};
+
+export function TypewriterText({
+  text,
+  speed = 50,
+  setIsLoading,
+  setCountValue,
+}) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    setDisplayedText(""); // Avval tozalash
+
+    if (setIsLoading) {
+      setIsLoading(true); // Yozish boshlanayotganda true
+    }
+
+    const interval = setInterval(() => {
+      if (i < text?.length) {
+        setDisplayedText(text?.slice(0, i + 1));
+        setCountValue(i + 1); // Hozirgi indeksni tashqi holatga o'rnatish
+        i++;
+      } else {
+        clearInterval(interval);
+        if (setIsLoading) {
+          setIsLoading(false); // Yozish tugaganda false
+          setCountValue(0); // Yozish tugagach, qiymatni 0 ga o'rnatish
+        }
+      }
+    }, speed);
+
+    return () => {
+      clearInterval(interval);
+      if (setIsLoading) {
+        setIsLoading(false); // Cleanup qilganda ham false
+      }
+    };
+  }, [text, speed, setIsLoading]);
+
+  return <>{displayedText}</>;
+}
