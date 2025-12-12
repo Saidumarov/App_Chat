@@ -96,6 +96,22 @@ export const monthNames = {
     "Noyabr",
     "Dekabr",
   ],
+
+  oz: [
+    "Январ",
+    "Феврал",
+    "Март",
+    "Апрел",
+    "Май",
+    "Июн",
+    "Июл",
+    "Август",
+    "Сентабр",
+    "Октябр",
+    "Ноябр",
+    "Декабр",
+  ],
+
   ru: [
     "Январь",
     "Февраль",
@@ -109,6 +125,21 @@ export const monthNames = {
     "Октябрь",
     "Ноябрь",
     "Декабрь",
+  ],
+
+  en: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ],
 };
 
@@ -165,12 +196,24 @@ export const formatDateHeader = (date, language = "uz") => {
 
   // Bugun
   if (date.toDateString() === today.toDateString()) {
-    return language === "uz" ? "Bugun" : "Сегодня";
+    return language === "uz"
+      ? "Bugun"
+      : language === "oz"
+      ? "Бугун"
+      : language === "ru"
+      ? "Сегодня"
+      : "Today";
   }
 
   // Kecha
   if (date.toDateString() === yesterday.toDateString()) {
-    return language === "uz" ? "Kecha" : "Вчера";
+    return language === "uz"
+      ? "Kecha"
+      : language === "oz"
+      ? "Кеча"
+      : language === "ru"
+      ? "Вчера"
+      : "Yesterday";
   }
 
   return `${day} ${month} ${year}`;

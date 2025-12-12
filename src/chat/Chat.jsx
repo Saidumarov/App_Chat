@@ -47,7 +47,7 @@ const Chat = () => {
         {
           body: {
             channel: "web",
-            language: "uz",
+            language: locale,
             anon_id: anon_id,
           },
           url: "/chat/sessions/",
@@ -64,7 +64,7 @@ const Chat = () => {
         {
           body: {
             channel: "web",
-            language: "uz",
+            language: locale,
             full_name: full_name || "Anonim",
           },
           url: "/chat/sessions/",

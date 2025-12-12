@@ -13,6 +13,7 @@
     "cancel": "Cancel",
     "loginError": "An error occurred during login. Please check your information.",
     "tooManyRequests": "Too many attempts. Please try again later.",
-    "ss": "Session does not exist"
+    "ss": "Session does not exist",
+    "yu": "Sent"
   }
 }

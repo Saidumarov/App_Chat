@@ -85,7 +85,7 @@ const DinamikForm = ({ setCountValue, formData }) => {
                 }}
                 control={control}
                 hasError={errors[field.name]?.message}
-                lang={lang}
+                lang={lang || "uz"}
               />
             )}
           />
@@ -266,7 +266,7 @@ const DinamikForm = ({ setCountValue, formData }) => {
           },
           {
             onSuccess: (res) => {
-              if (res?.status === 'success') {
+              if (res?.status === "success") {
                 // ✅ Success holatini o'rnatish
                 setSuccess(true);
 
@@ -331,7 +331,11 @@ const DinamikForm = ({ setCountValue, formData }) => {
             <span className="font-medium">
               {lang === "uz"
                 ? "Muvaffaqiyatli yuborildi!"
-                : "Успешно отправлено!"}
+                : lang === "oz"
+                ? "Муваффақиятли юборилди!"
+                : lang === "ru"
+                ? "Успешно отправлено!"
+                : "Successfully sent!"}
             </span>
           </div>
         )}
@@ -361,7 +365,13 @@ const DinamikForm = ({ setCountValue, formData }) => {
                 <>
                   <ImSpinner9 className="animate-spin w-4 h-4" />
                   <span>
-                    {lang === "uz" ? "Yuborilmoqda..." : "Отправка..."}
+                    {lang === "uz"
+                      ? "Yuborilmoqda..."
+                      : lang === "oz"
+                      ? "Юборилмоқда..."
+                      : lang === "ru"
+                      ? "Отправка..."
+                      : "Sending..."}
                   </span>
                 </>
               ) : success ? (
@@ -377,7 +387,15 @@ const DinamikForm = ({ setCountValue, formData }) => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>{lang === "uz" ? "Yuborildi" : "Отправлено"}</span>
+                  <span>
+                    {lang === "uz"
+                      ? "Yuborildi"
+                      : lang === "oz"
+                      ? "Юборилди"
+                      : lang === "ru"
+                      ? "Отправлено"
+                      : "Sent"}
+                  </span>
                 </>
               ) : (
                 t("save")
