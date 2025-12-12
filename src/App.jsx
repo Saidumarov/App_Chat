@@ -13,9 +13,9 @@ function App() {
   );
 
   const KEYID = decryptAES(KEY);
-  if (!id || !isMobile || KEYID !== VITE_OPEN_KEY) {
-    return null;
-  }
+  // if (!id || !isMobile || KEYID !== VITE_OPEN_KEY) {
+  //   return null;
+  // }
 
   return (
     <>
