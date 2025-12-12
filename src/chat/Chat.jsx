@@ -401,29 +401,21 @@ const Chat = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 hidden max-lg:block z-[999999] font-sans">
+    <>
       <ImageViewer
         imageUrl={selectedImageViw}
         isOpen={viewerOpen}
         onClose={() => setViewerOpen(false)}
       />
 
-      <div
-        className="absolute  inset-0 w-screen top-0 left-0 bg-white flex flex-col"
-        style={{ height: "100svh" }}
-      >
-        {/* HEADER */}
-        <div
-          className="sticky top-0 left-0 z-10 
-      bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645]
-      p-3 px-5 pt-6 pb-4 text-white select-none"
-        >
+      {/* <div className="fixed top-0 left-0 w-full h-full bg-white shadow-main  flex-col  hidden  max-lg:flex z-[999999]">
+        <div className="bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-x-2">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <img src={Bot} className="w-full h-full rounded-full" />
-              </div>
-              <p className="text-lg font-semibold">MKBANK</p>
+            <div className="flex items-center justify-start gap-x-2">
+              <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
+                <img src={`${Bot}`} className="w-full h-full rounded-full" />
+              </div>{" "}
+              <p className="text-lg font-semibold m-0">MKBANK</p>
             </div>
           </div>
         </div>
@@ -442,6 +434,7 @@ const Chat = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
+
         <div
           className={`  !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200`}
         >
@@ -497,8 +490,96 @@ const Chat = () => {
             </button>
           </div>
         </div>
+      </div> */}
+
+      <div
+        className="absolute inset-0 w-full h-full bg-white shadow-main flex flex-col hidden max-lg:flex z-[999999]"
+        style={{ height: "100svh" }}
+      >
+        {/* HEADER */}
+        <div className="sticky top-0 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white select-none">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-x-2">
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                <img src={Bot} className="w-full h-full rounded-full" />
+              </div>
+              <p className="text-lg font-semibold">MKBANK</p>
+            </div>
+          </div>
+        </div>
+
+        {/* BODY */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-5 max-sm:px-2 bg-gray-50">
+          <GroupedMessages
+            messages={messages}
+            openViewer={openViewer}
+            setCountValue={setCountValue}
+            setIsLoading={setIsLoading}
+          />
+          {isTyping?.sender !== "user" ? (
+            isTyping?.is_typing && <IsTypengLoading sender={isTyping?.sender} />
+          ) : (
+            <></>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* FOOTER / INPUT */}
+        <div className="px-2 py-[10px] max-sm:py-2 w-full bg-white border-t border-gray-200">
+          {selectedImage && (
+            <div className="mb-2 w-20 h-20 relative">
+              <img
+                src={selectedImage}
+                alt="preview"
+                className="w-full h-full object-cover rounded-md"
+              />
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+          <div className="flex relative  items-center gap-2">
+            <button
+              onClick={() => fileInputRef.current.click()}
+              className="p-2 bg-gray-100 top-[5px] text-[#18c139] rounded-full flex-shrink-0 transition-colors"
+            >
+              <Paperclip className="w-5 h-5 " />
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+            <div className="flex-1 h-full flex items-center  justify-center relative">
+              <textarea
+                ref={textareaRef}
+                value={inputMessage}
+                onChange={(e) => handleCahnge(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={t("send")}
+                rows={1}
+                className="w-full p-[10px]  max-h-[120px] min-h-[40px] h-[44px]  max-sm:!text-[16px]  max-2xl:text-[14px] border scrolbar  pr-[44px]  border-gray-300 rounded-[16px]   resize-none focus:outline-none focus:border-[#18c139]"
+              />
+            </div>
+
+            <button
+              onClick={handleSendMessage}
+              disabled={!inputMessage.trim() || isLoading || isTyping.is_typing}
+              className=" max-sm:p-0 absolute top-[5px]  right-1 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] text-white rounded-full hover:opacity-90 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            >
+              <span className="block">
+                <Sends />
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
