@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow: hidden;
+}
+
 /* Shadow DOM uchun Reset */
 :host {
   all: initial;
@@ -100,7 +104,6 @@ input[type="datetime-local"] {
   -moz-appearance: none;
   appearance: none;
 }
-
 
 /* UI-Text Rich Content Styling */
 #chat-widget-root .ui-text {
