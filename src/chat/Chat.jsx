@@ -408,8 +408,11 @@ const Chat = () => {
         onClose={() => setViewerOpen(false)}
       />
 
-      <div className="fixed top-0 left-0 w-full h-full bg-white shadow-main flex flex-col">
-        <div className="bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
+      <div
+        style={{ height: "100svh" }}
+        className="fixed top-0 left-0 w-full overflow-hidden h-full bg-white shadow-main flex flex-col"
+      >
+        <div className=" sticky top-0 left-0 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
           <div className="flex justify-between items-center">
             <div className="flex items-center justify-start gap-x-2">
               <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -474,8 +477,7 @@ const Chat = () => {
                 onKeyDown={handleKeyDown}
                 placeholder={t("send")}
                 rows={1}
-                className="w-full p-2.5  border scrolbar  max-sm:pr-11  border-gray-300 rounded-2xl  max-sm:!text-[16px]  max-2xl:text-sm   resize-none focus:outline-none focus:border-[#18c139]"
-                style={{ maxHeight: "120px", minHeight: "42px" }}
+                className="w-full p-[10px]  max-h-[120px] min-h-[40px] h-[44px]  max-sm:!text-[16px]  max-2xl:text-[14px] border scrolbar  pr-[44px]  border-gray-300 rounded-[16px]   resize-none focus:outline-none focus:border-[#18c139]"
               />
             </div>
 
