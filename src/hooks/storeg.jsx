@@ -11,6 +11,16 @@ export const getStoredSessionId = () => {
   }
 };
 
+export const getStoreKEY = () => {
+  try {
+    const id = new URLSearchParams(location.search).get("key");
+    return id;
+  } catch (e) {
+    console.error("localStorage o'qishda xatolik:", e);
+    return null;
+  }
+};
+
 export const setStoredSessionId = (id) => {
   try {
     localStorage.setItem(STORAGE_KEY, id);
