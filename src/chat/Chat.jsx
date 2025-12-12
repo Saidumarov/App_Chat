@@ -401,7 +401,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="fixed hidden max-lg:block z-[999999] font-sans">
+    <div className="fixed top-0 left-0 hidden max-lg:block z-[999999] font-sans">
       <ImageViewer
         imageUrl={selectedImageViw}
         isOpen={viewerOpen}
@@ -409,16 +409,21 @@ const Chat = () => {
       />
 
       <div
+        className="absolute  inset-0 w-screen top-0 left-0 bg-white flex flex-col"
         style={{ height: "100svh" }}
-        className="fixed top-0 left-0 w-full overflow-hidden h-full bg-white shadow-main flex flex-col"
       >
-        <div className=" sticky top-0 left-0 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
+        {/* HEADER */}
+        <div
+          className="sticky top-0 left-0 z-10 
+      bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645]
+      p-3 px-5 pt-6 pb-4 text-white select-none"
+        >
           <div className="flex justify-between items-center">
-            <div className="flex items-center justify-start gap-x-2">
-              <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
-                <img src={`${Bot}`} className="w-full h-full rounded-full" />
-              </div>{" "}
-              <p className="text-lg font-semibold m-0">MKBANK</p>
+            <div className="flex items-center gap-x-2">
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                <img src={Bot} className="w-full h-full rounded-full" />
+              </div>
+              <p className="text-lg font-semibold">MKBANK</p>
             </div>
           </div>
         </div>
