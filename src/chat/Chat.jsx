@@ -408,8 +408,8 @@ const Chat = () => {
         onClose={() => setViewerOpen(false)}
       />
 
-      <div className="fixed  overflow-x-hidden overflow-y-auto top-0 left-0 w-full h-full bg-white shadow-main  flex-col  hidden  max-lg:flex z-[999999]">
-        <div className=" fixed w-full z-40 left-0 top-0 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
+      <div className="fixed top-0 left-0 w-full h-full bg-white shadow-main  flex-col  hidden  max-lg:flex z-[999999]">
+        <div className="bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] p-3 px-5 pt-6 pb-4 text-white  select-none">
           <div className="flex justify-between items-center">
             <div className="flex items-center justify-start gap-x-2">
               <div className="w-10 h-10 bg-white  rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -420,7 +420,7 @@ const Chat = () => {
           </div>
         </div>
 
-        <div className="  h-full w-full  p-5  max-sm:px-2 bg-gray-50">
+        <div className="overflow-y-auto  h-full overflow-x-hidden w-full  p-5  max-sm:px-2 bg-gray-50">
           <GroupedMessages
             messages={messages}
             openViewer={openViewer}
@@ -434,9 +434,8 @@ const Chat = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
-
         <div
-          className={`fixed bottom-0 left-0  !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200`}
+          className={`  !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200`}
         >
           {selectedImage && (
             <div className="mb-2 w-20 h-20 relative">
