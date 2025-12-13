@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Paperclip, X } from "lucide-react";
 import { Sends } from "../constants/icons";
 import { ImageViewer } from "../components/ImageViewer";
@@ -284,8 +284,15 @@ const Chat = () => {
     }
   }, [inputMessage]);
 
+  const disable = useCallback(() => {
+    if (active == "operator") return false;
+    return !inputMessage.trim() || isLoading || isTyping.is_typing;
+  }, [active, inputMessage, isLoading, isTyping.is_typing]);
+
+  const isActive = disable();
+
   const handleSendMessage = () => {
-    if (!inputMessage.trim() || isLoading || isTyping.is_typing) return;
+    if (isActive) return;
     playSendSound();
     ws.send(
       JSON.stringify({
@@ -480,7 +487,7 @@ const Chat = () => {
 
             <button
               onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading || isTyping.is_typing}
+              disabled={isActive}
               className=" max-sm:p-0 absolute top-[5px]  right-1 bg-gradient-to-r from-[#0d5293] via-[#3CAB3D] to-[#42e645] text-white rounded-full hover:opacity-90 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
             >
               <span className="block">
