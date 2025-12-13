@@ -12,7 +12,7 @@ function App() {
     navigator.userAgent
   );
 
-  const KEYID = decryptAES(KEY);
+  // const KEYID = decryptAES(KEY);
   // if (!id || !isMobile || KEYID !== VITE_OPEN_KEY) {
   //   return null;
   // }

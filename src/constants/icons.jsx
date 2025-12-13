@@ -72,12 +72,11 @@ export const OP = () => (
     xmlSpace="preserve"
   >
     <g>
-      <g fill="#d1d5db" fill-rule="evenodd" clip-rule="evenodd">
+      <g fill="#d1d5db" fillRule="evenodd" clipRule="evenodd">
         <path
           d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM9 13c-1.663 0-3.262.758-4.199 1.9-.475.58-.81 1.297-.839 2.092-.03.812.263 1.604.868 2.295C6.302 20.972 8.653 22 12 22s5.698-1.028 7.17-2.713c.605-.691.898-1.483.868-2.295-.03-.795-.363-1.512-.84-2.092C18.263 13.76 16.664 13 15 13z"
           fill="#939597"
           opacity="1"
-          class=""
         ></path>
       </g>
     </g>

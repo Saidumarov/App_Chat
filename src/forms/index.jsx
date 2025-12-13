@@ -110,51 +110,51 @@ const DinamikForm = ({ setCountValue, formData }) => {
           />
         );
 
-      // case "select":
-      //   return (
-      //     <Controller
-      //       name={field.name}
-      //       control={control}
-      //       render={({ field: formField }) => {
-      //         return (
-      //           <div>
-      //             <Select
-      //               value={formField.value || ""}
-      //               onValueChange={(value) => {
-      //                 formField.onChange(value);
-      //               }}
-      //             >
-      //               <SelectTrigger
-      //                 className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
-      //                   hasError
-      //                     ? "!bg-red-100 border-red-300"
-      //                     : "bg-white border-gray-300"
-      //                 }`}
-      //               >
-      //                 <SelectValue
-      //                   placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
-      //                 >
-      //                   {field.options?.find(
-      //                     (el) => el?.value === formField?.value
-      //                   )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
-      //                 </SelectValue>
-      //               </SelectTrigger>
+      case "select":
+        return (
+          <Controller
+            name={field.name}
+            control={control}
+            render={({ field: formField }) => {
+              return (
+                <div>
+                  <Select
+                    value={formField.value || ""}
+                    onValueChange={(value) => {
+                      formField.onChange(value);
+                    }}
+                  >
+                    <SelectTrigger
+                      className={`w-full !rounded-xl shadow-none bg-white border-gray-300 !text-[1rem] h-[42px] min-w-full ${
+                        hasError
+                          ? "!bg-red-100 border-red-300"
+                          : "bg-white border-gray-300"
+                      }`}
+                    >
+                      <SelectValue
+                        placeholder={lang === "uz" ? "Tanlang" : "Выберите"}
+                      >
+                        {field.options?.find(
+                          (el) => el?.value === formField?.value
+                        )?.[lang === "uz" ? "labelUz" : "labelRu"] || ""}
+                      </SelectValue>
+                    </SelectTrigger>
 
-      //               <SelectContent className="w-full !text-[1rem] min-w-60">
-      //                 <SelectGroup>
-      //                   {field?.options?.map((opt, i) => (
-      //                     <SelectItem key={i} value={opt?.value}>
-      //                       {lang === "uz" ? opt?.labelUz : opt?.labelRu}
-      //                     </SelectItem>
-      //                   ))}
-      //                 </SelectGroup>
-      //               </SelectContent>
-      //             </Select>
-      //           </div>
-      //         );
-      //       }}
-      //     />
-      //   );
+                    <SelectContent className="w-full !text-[1rem] min-w-60">
+                      <SelectGroup>
+                        {field?.options?.map((opt, i) => (
+                          <SelectItem key={i} value={opt?.value}>
+                            {lang === "uz" ? opt?.labelUz : opt?.labelRu}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              );
+            }}
+          />
+        );
 
       case "file":
         return (
