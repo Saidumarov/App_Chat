@@ -442,7 +442,7 @@ const Chat = () => {
           <div ref={messagesEndRef} />
         </div>
         <div
-          className={`  !px-2 max-sm:!py-2 w-full !py-[10px] bg-white border-t border-gray-200`}
+          className={`  !px-2   !py-2 w-full  bg-white border-t border-gray-200`}
         >
           {selectedImage && (
             <div className="mb-2 w-20 h-20 relative">
@@ -481,7 +481,7 @@ const Chat = () => {
                 onKeyDown={handleKeyDown}
                 placeholder={t("send")}
                 rows={1}
-                className="w-full p-[10px]  max-h-[120px] min-h-[40px] h-[44px]  max-sm:!text-[16px]  max-2xl:text-[14px] border scrolbar  pr-[44px]  border-gray-300 rounded-[16px]   resize-none focus:outline-none focus:border-[#18c139]"
+                className="w-full p-[10px]  max-h-[120px] min-h-[40px] h-[44px] !text-[16px]   border scrolbar  pr-[44px]  border-gray-300 rounded-[12px]   resize-none focus:outline-none focus:border-[#18c139]"
               />
             </div>
 
