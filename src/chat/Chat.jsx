@@ -379,21 +379,21 @@ const Chat = () => {
     setInputMessage(value);
 
     // Agar hali typing true bo'lmasa yuboramiz
-    if (!isTypingLocal && value.length > 0) {
-      sendTyping(sessionId, true);
-      setIsTypingLocal(true);
-    }
+    // if (!isTypingLocal && value.length > 0) {
+    //   sendTyping(sessionId, true);
+    //   setIsTypingLocal(true);
+    // }
 
     // Timeoutni tozalaymiz
-    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    // if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
 
     // 1.2 sekund yozish to'xtasa false yuboramiz
-    typingTimeoutRef.current = setTimeout(() => {
-      if (isTypingLocal) {
-        sendTyping(sessionId, false);
-        setIsTypingLocal(false);
-      }
-    }, 1200);
+    // typingTimeoutRef.current = setTimeout(() => {
+    //   if (isTypingLocal) {
+    //     sendTyping(sessionId, false);
+    //     setIsTypingLocal(false);
+    //   }
+    // }, 1200);
   };
 
   const handleImageUpload = (e) => {
