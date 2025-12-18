@@ -1,20 +1,33 @@
-MKBANK Chat Widget
-Setup
-npm i
+# MKBANK Chat Widget
 
-Build
+## Setup
+
+```bash
+npm install
+cp .env.example .env
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+## Production
+
+```bash
 npm run build
-
-Run (production preview)
 npx serve -s dist -l 8080
+```
 
-URL
+## URL
+
+```
 http://localhost:8080
+```
 
-Notes
+## Notes
 
-dist/ — production build
-
-Static deploy uchun tayyor
-
-Mobil ilovaga WebView orqali ulanadi
+- `dist/` — production build
+- Static deploy uchun tayyor
+- Mobil ilovaga WebView orqali ulanadi
